@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hasil Nilai Siswa</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daftar Nilai Siswa</h1>
+    <script>
+        // Mendefinisikan data siswa
+        let s1 = {'nama': 'Ali', 'nilai': 80};
+        let s2 = {'nama': 'Budi', 'nilai': 90};
+        let s3 = {'nama': 'Cindy', 'nilai': 55};
+        let s4 = {'nama': 'David', 'nilai': 70};
+        let s5 = {'nama': 'Elena', 'nilai': 95};
+
+        // Menggabungkan semua siswa ke dalam array
+        let siswa = [s1, s2, s3, s4, s5];
+
+        // Fungsi untuk menentukan grade
+        function dapatkanGrade(nilai) {
+            if (nilai >= 85) return 'A';
+            if (nilai >= 75) return 'B';
+            if (nilai >= 60) return 'C';
+            if (nilai >= 30) return 'D';
+            return 'E';
+        }
+
+        // Fungsi untuk menentukan predikat berdasarkan grade
+        function dapatkanPredikat(grade) {
+            const predikat = {
+                'A': 'Sangat Baik',
+                'B': 'Baik',
+                'C': 'Cukup',
+                'D': 'Kurang',
+                'E': 'Sangat Kurang'
+            };
+            return predikat[grade];
+        }
+
+        // Membuat dan mengisi tabel
+        document.write('<table>');
+        document.write(`
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Nilai</th>
+                <th>Keterangan</th>
+                <th>Grade</th>
+                <th>Predikat</th>
+            </tr>
+        `);
+
+        siswa.forEach((siswa, indeks) => {
+            const grade = dapatkanGrade(siswa.nilai);
+            const keterangan = siswa.nilai > 60 ? 'Lulus' : 'Tidak Lulus';
+            const predikat = dapatkanPredikat(grade);
+            
+            document.write(`
+                <tr>
+                    <td>${indeks + 1}</td>
+                    <td>${siswa.nama}</td>
+                    <td>${siswa.nilai}</td>
+                    <td>${keterangan}</td>
+                    <td>${grade}</td>
+                    <td>${predikat}</td>
+                </tr>
+            `);
+        });
+
+        document.write('</table>');
+    </script>
+</body>
+</html>

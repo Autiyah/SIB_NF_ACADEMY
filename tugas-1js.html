@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 1</title>
+    <script>
+        //Function Declaration untuk menghitung luas persegi panjang
+        function hitungLuasPersegiPanjang(panjang, lebar) {
+            // Menghitung luas dengan rumus panjang * lebar
+            return panjang * lebar;
+        }
+
+        //Arrow Function untuk menghitung luas lingkaran
+        const hitungLuasLingkaran = (jariJari) => {
+            // Menghitung luas dengan rumus π * jariJari^2
+            return Math.PI * Math.pow(jariJari, 2);
+        };
+
+        //Fungsi untuk menampilkan hasil perhitungan
+        function tampilkanHasil() {
+            //Mengambil nilai dari input
+            const panjang = parseFloat(document.getElementById('panjang').value);
+            const lebar = parseFloat(document.getElementById('lebar').value);
+            const jariJari = parseFloat(document.getElementById('jariJari').value);
+            
+            //Menghitung luas menggunakan function declaration dan arrow function
+            const luasPersegiPanjang = hitungLuasPersegiPanjang(panjang, lebar);
+            const luasLingkaran = hitungLuasLingkaran(jariJari);
+            
+            //Menampilkan hasil di elemen HTML
+            document.getElementById('hasil').innerHTML = `
+                Luas Persegi Panjang: ${luasPersegiPanjang.toFixed(2)} <br>
+                Luas Lingkaran: ${luasLingkaran.toFixed(2)}
+            `;
+        }
+    </script>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100vh; text-align: center;">
+
+    <h1>Hitung Luas Persegi Panjang dan Lingkaran</h1>
+    
+    <div style="margin-bottom: 20px;">
+        <h2>Persegi Panjang</h2>
+        <label for="panjang">Panjang:</label>
+        <input type="number" id="panjang" placeholder="Masukkan panjang"><br>
+        <label for="lebar">Lebar:</label>
+        <input type="number" id="lebar" placeholder="Masukkan lebar"><br>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <h2>Lingkaran</h2>
+        <label for="jariJari">Jari-jari:</label>
+        <input type="number" id="jariJari" placeholder="Masukkan jari-jari"><br>
+    </div>
+    
+    <button onclick="tampilkanHasil()">Hitung Luas</button>
+    
+    <h2 style="margin-top: 20px;">Hasil</h2>
+    <div id="hasil"></div>
+
+</body>
+</html>
