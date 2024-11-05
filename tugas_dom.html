@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Galeri Hewan Interaktif</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .gallery-item {
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .animal-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px;
+            text-align: center;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+        .modal-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Galeri Hewan Lucu</h1>
+    <div class="gallery" id="gallery"></div>
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <div class="modal-content">
+            <img id="modalImg">
+        </div>
+    </div>
+
+    <script>
+        const animals = [
+            { 
+                name: 'Kucing',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Meow.ogg'
+            },
+            {
+                name: 'Anjing',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Puppy_on_Halong_Bay.jpg/1200px-Puppy_on_Halong_Bay.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/3/31/Peter_barking.ogg'
+            },
+            {
+                name: 'Singa',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/1200px-Lion_waiting_in_Namibia.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/d/df/Lion_raring-sound1TamilNadu178.ogg'
+            },
+            {
+                name: 'Gajah',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/1200px-African_Bush_Elephant.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/6/66/Elephant_trumpet.ogg'
+            },
+            {
+                name: 'Burung Hantu',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Northern_Spotted_Owl.USFWS.jpg/800px-Northern_Spotted_Owl.USFWS.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Calls_of_a_Northern_Spotted_Owl_%28Strix_occidentalis_caurina%29.ogg'
+            },
+            {
+                name: 'Serigala',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Kolm%C3%A5rden_Wolf.jpg/1200px-Kolm%C3%A5rden_Wolf.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Wolf_howls.ogg'
+            },
+            {
+                name: 'Lumba-lumba',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Tursiops_truncatus_01.jpg/1200px-Tursiops_truncatus_01.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Dolphin_cry.ogg'
+            },
+            {
+                name: 'Katak',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Frog_on_palm_frond.jpg/1200px-Frog_on_palm_frond.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Rana_temporaria_calling.ogg'
+            },
+            {
+                name: 'Ayam',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Female_pair.jpg/1200px-Female_pair.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/Rooster_crowing.ogg'
+            },
+            {
+                name: 'Kuda',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Nokota_Horses_cropped.jpg/1200px-Nokota_Horses_cropped.jpg',
+                sound: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Horse_neigh.ogg'
+            }
+        ];
+
+        const gallery = document.getElementById('gallery');
+        const modal = document.getElementById('myModal');
+        const modalImg = document.getElementById('modalImg');
+        const closeBtn = document.getElementsByClassName('close')[0];
+
+        animals.forEach((animal, index) => {
+            const container = document.createElement('div');
+            container.className = 'gallery-item';
+            
+            const img = document.createElement('img');
+            img.src = animal.image;
+            img.alt = animal.name;
+            
+            const nameLabel = document.createElement('div');
+            nameLabel.className = 'animal-name';
+            nameLabel.textContent = animal.name;
+            
+            const audio = document.createElement('audio');
+            audio.id = `audio-${index}`;
+            audio.src = animal.sound;
+
+            container.onclick = function() {
+                modal.style.display = 'block';
+                modalImg.src = animal.image;
+                modalImg.alt = animal.name;
+                const sound = document.getElementById(`audio-${index}`);
+                sound.play().catch(e => console.log('Audio playback failed:', e));
+            }
+
+            container.appendChild(img);
+            container.appendChild(nameLabel);
+            container.appendChild(audio);
+            gallery.appendChild(container);
+        });
+
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>#333
