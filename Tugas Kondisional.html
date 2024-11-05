@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hitung Gaji Pegawai</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
+        <h1 class="text-2xl font-bold mb-4">Hitung Gaji Pegawai</h1>
+        <form id="gaji-form" class="space-y-4">
+            <div>
+                <label for="golongan" class="block font-medium mb-2">Golongan</label>
+                <select id="golongan" name="golongan" class="border rounded px-4 py-2 w-full">
+                    <option value="">Pilih Golongan</option>
+                    <option value="1">Golongan 1</option>
+                    <option value="2">Golongan 2</option>
+                    <option value="3">Golongan 3</option>
+                </select>
+            </div>
+            <div>
+                <label for="status" class="block font-medium mb-2">Status</label>
+                <select id="status" name="status" class="border rounded px-4 py-2 w-full">
+                    <option value="">Pilih Status</option>
+                    <option value="menikah">Menikah</option>
+                    <option value="belum_menikah">Belum Menikah</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Hitung Gaji
+            </button>
+        </form>
+        <div id="hasil" class="mt-4 text-center font-bold text-2xl"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('gaji-form');
+        const hasilDiv = document.getElementById('hasil');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const golongan = document.getElementById('golongan').value;
+            const status = document.getElementById('status').value;
+
+            let gajiBersih;
+            if (golongan === '' || status === '') {
+                gajiBersih = 'Harap isi semua data.';
+            } else if (golongan === '1') {
+                gajiBersih = 10000000;
+            } else if (golongan === '2') {
+                gajiBersih = status === 'menikah' ? 17000000 : 15000000;
+            } else if (golongan === '3') {
+                gajiBersih = 20000000;
+            } else {
+                gajiBersih = 'Golongan tidak valid.';
+            }
+
+            hasilDiv.textContent = `Gaji Bersih: Rp ${gajiBersih.toLocaleString()}`;
+        });
+    </script>
+</body>
+</html>
